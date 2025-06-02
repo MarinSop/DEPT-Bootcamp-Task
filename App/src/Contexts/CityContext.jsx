@@ -6,22 +6,26 @@ export const CityProvider = ({ children }) => {
 
     const getCitiesFromLocal = () => {
         let cities = localStorage.getItem("cities");
-        cities = cities ? JSON.parse(cities) : {};
+        cities = cities ? JSON.parse(cities) : [];
         return cities;
     }
 
     const [cities, setCities] = useState(getCitiesFromLocal);
 
-    const saveCity = (name,code) => {
+    const saveCity = (city) => {
         let cities = getCitiesFromLocal();
-        cities[code] = name; 
-        setCities(cities);
-        localStorage.setItem("cities", JSON.stringify(cities));
+        const exists = cities.some(c => c.name === city.name && c.code === city.code);
+        if(!exists)
+        {
+            cities.push(city); 
+            setCities(cities);
+            localStorage.setItem("cities", JSON.stringify(cities));
+        }
     }
 
-    const removeCity = (code) => {
+    const removeCity = (city) => {
         let cities = getCitiesFromLocal();
-        delete cities[code];
+        cities = cities.filter(c => city.code !== c.code);
         setCities(cities);
         localStorage.setItem("cities", JSON.stringify(cities));
     }

@@ -1,0 +1,54 @@
+.fetch-cities
+{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 80%;
+        background: linear-gradient(#242424, #242424) padding-box,
+                    linear-gradient(to left, #743ad5, #d53a9d) border-box;
+    border-radius: 10px;
+    border: 10px solid transparent;
+}
+.fetch-buttons
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 10px 0px; 
+}
+.fetch-buttons select
+{
+    width: 70%;
+}
+.fetch-cities ul
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    border-radius: 10px;
+}
+.fetch-cities ul li
+{
+    min-height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+}
+
+.fetch-cities ul li:nth-child(odd)
+{
+    background-color: #2f2f2f;
+}
+
+.fetch-cities ul li p 
+{
+    width: 80%;
+    text-align: left;
+    margin-left: 20px;
+}
+.fetch-cities ul li button
+{
+    margin-right: 20px;
+}
