@@ -1,11 +1,15 @@
-.fetch-cities
+.fetch-component
 {
     display: flex;
     flex-direction: column;
     width: 30%;
-    height: 80%;
-        background: linear-gradient(#242424, #242424) padding-box,
-                    linear-gradient(to left, #743ad5, #d53a9d) border-box;
+}
+.fetch-cities
+{
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(#242424, #242424) padding-box,
+                linear-gradient(to left, #743ad5, #d53a9d) border-box;
     border-radius: 10px;
     border: 10px solid transparent;
 }

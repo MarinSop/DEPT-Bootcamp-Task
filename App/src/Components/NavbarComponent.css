@@ -1,0 +1,56 @@
+nav
+{
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    background: linear-gradient(#242424, #242424) padding-box,
+                    linear-gradient(to left, #00C853, #B2FF59, #743ad5,#d53a9d) border-box;
+    border-bottom: 4px solid transparent;
+}
+.logo-container
+{
+    margin-right: auto;
+    margin-left: 20px;
+}
+.login-container
+{
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+#logout-button
+{
+    width: 64px;
+    height:32px;
+    padding: 0;
+    background-color: #800020;
+}
+
+#login-button
+{
+    border-radius: 8px;
+    border: 1px solid transparent;
+    color: white;
+    transition: border-color 0.25s;
+    width: 64px;
+    height:32px;
+    padding: 5px 12px 5px 12px;
+    background-color: #33b249;
+}
+#login-button:hover {
+  border-color: #646cff;
+}
+#login-button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.navbar ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}

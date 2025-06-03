@@ -1,9 +1,13 @@
-.saved-cities
+.save-component
 {
     display: flex;
     flex-direction: column;
     width: 30%;
-    min-height: 80%;
+}
+.saved-cities
+{
+    display: flex;
+    flex-direction: column;
     background: linear-gradient(#242424, #242424) padding-box,
               linear-gradient(to left, #00C853, #B2FF59) border-box;
     border-radius: 10px;
