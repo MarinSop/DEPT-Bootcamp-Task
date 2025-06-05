@@ -15,3 +15,18 @@ main
     margin-top: auto;
     margin-bottom: auto;
 }
+
+.per-page-select
+{
+    height: 30px;
+    align-items: center;
+}
+.per-page-select input
+{
+    width: 50px;
+}
+.per-page-select label
+{
+    font-size: 0.9em;
+    margin-right: 10px;
+}

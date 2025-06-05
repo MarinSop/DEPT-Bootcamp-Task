@@ -3,6 +3,11 @@ main
     width: 100%;
     height: 100%;
 }
+.login
+{
+    margin: auto;
+}
+
 .login-form
 {
     margin-bottom: auto;
@@ -19,9 +24,7 @@ main
 .error-msg
 {
     color: #a10029;
-    font-size: 1.2em;
-    margin: 0;
-    margin-top: auto;
+    min-height: 1.2em;
 }
 
 form

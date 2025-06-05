@@ -50,9 +50,18 @@ button {
 button:hover {
   border-color: #646cff;
 }
+.button-active
+{
+  border-color: #646cff;
+}
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+button:active
+{
+  background-color: #131313;
 }
 
 @media (prefers-color-scheme: light) {

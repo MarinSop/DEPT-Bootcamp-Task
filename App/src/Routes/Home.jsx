@@ -1,5 +1,6 @@
 import SavedCitiesComponent from "../Components/SavedCitiesComponent";
 import FetchedCitiesComponent from "../Components/FetchedCitiesComponent";
+import GroupsComponent from "../Components/GroupsComponent";
 import './Home.css'
 import NavbarComponent from "../Components/NavbarComponent";
 
@@ -13,6 +14,7 @@ const Home = () => {
                 <FetchedCitiesComponent/>
                 <SavedCitiesComponent/>
             </div>
+            <GroupsComponent/>
         </main>
     )
 }

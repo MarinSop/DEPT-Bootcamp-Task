@@ -10,7 +10,7 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [errorMsg, setErrorMsg] = useState('\u00A0');
+    const [errorMsg, setErrorMsg] = useState("");
 
     const handleSubmit = async (f) => {
         f.preventDefault();
@@ -48,26 +48,31 @@ const Login = () => {
     return (
         <main>
             <NavbarComponent />
-            <p className="error-msg">{errorMsg}</p>
-            <div className="login-form">
-                <form onSubmit={handleSubmit}>
-                    <label>Email</label>
-                    <input 
-                        name="email"
-                        type="email"
-                        id="email"
-                        onChange={e => setEmail(e.target.value)}
-                        required/>
+            <div className="login">
+                <div className="error-msg"
+                    style={{visibility: errorMsg ? "visible" : "hidden"}}>
+                    {errorMsg}
+                </div>
+                <div className="login-form">
+                    <form onSubmit={handleSubmit}>
+                        <label>Email</label>
+                        <input 
+                            name="email"
+                            type="email"
+                            id="email"
+                            onChange={e => setEmail(e.target.value)}
+                            required/>
 
-                    <label>Password</label>
-                    <input 
-                        name="password"
-                        type="password"
-                        id="password"
-                        onChange={e => setPassword(e.target.value)}
-                        required/>
-                    <button>Login</button>
-                </form>
+                        <label>Password</label>
+                        <input 
+                            name="password"
+                            type="password"
+                            id="password"
+                            onChange={e => setPassword(e.target.value)}
+                            required/>
+                        <button>Login</button>
+                    </form>
+                </div>
             </div>
         </main>
     );

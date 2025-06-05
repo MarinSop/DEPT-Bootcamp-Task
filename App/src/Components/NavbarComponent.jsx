@@ -9,7 +9,8 @@ const NavbarComponent = () => {
     
     return (
         <nav>
-            <div className="logo-container">LOGO</div>
+            <div className="logo-container">DEPT.
+            </div>
             <div className="navbar">
                 <ul>
                     <li><Link to="/" style={{color:"white"}}>Home</Link></li>

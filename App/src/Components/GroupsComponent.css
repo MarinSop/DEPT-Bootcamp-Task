@@ -1,19 +1,21 @@
-.fetch-component
+.groups-component
 {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 30%;
+    margin-bottom: auto;
 }
-.fetch-cities
+.groups
 {
     display: flex;
     flex-direction: column;
     background: linear-gradient(#242424, #242424) padding-box,
-                linear-gradient(to left, #743ad5, #d53a9d) border-box;
+                linear-gradient(to left, #00C853, #B2FF59, #743ad5,#d53a9d) border-box;
     border-radius: 10px;
     border: 10px solid transparent;
 }
-.fetch-buttons
+.groups-buttons
 {
     display: flex;
     flex-direction: row;
@@ -22,8 +24,7 @@
     margin: 10px 0px; 
     height: 50px;
 }
-
-.fetch-cities ul
+.groups ul
 {
     list-style-type: none;
     padding: 0;
@@ -31,7 +32,7 @@
     height: 100%;
     border-radius: 10px;
 }
-.fetch-cities ul li
+.groups ul li
 {
     min-height: 50px;
     display: flex;
@@ -40,18 +41,18 @@
     margin: auto;
 }
 
-.fetch-cities ul li:nth-child(odd)
+.groups ul li:nth-child(odd)
 {
     background-color: #2f2f2f;
 }
 
-.fetch-cities ul li p 
+.groups ul li p 
 {
     width: 80%;
     text-align: left;
     margin-left: 20px;
 }
-.fetch-cities ul li button
+.groups ul li button
 {
     margin-right: 20px;
 }

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../Contexts/AuthContext";
 import CityContext from "../Contexts/CityContext";
 import Pagination from "./PaginationComponent";
+import { canRequest } from "../Tools/RateLimiter";
 import './FetchedCitiesComponent.css'
 
 const FetchedCitiesComponent = () => {
@@ -13,11 +14,15 @@ const FetchedCitiesComponent = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [elementsPerPage, setElementsPerPage] = useState(5);
     const [totalPages, setTotalPages] = useState(Math.ceil(fetchedCities.length / elementsPerPage));
-    const [errorMsg, setErrorMsg] = useState('\u00A0');
+    const [errorMsg, setErrorMsg] = useState("");
     
     const fetchCities = async () => { 
         try
         {
+            if(!canRequest())
+            {
+                throw new Error("Rate limit exceeded. Please wait.");
+            }
             let domainPath = "/api/countries";
             if(limit)
                 {
@@ -30,7 +35,7 @@ const FetchedCitiesComponent = () => {
             if(!response.ok)
             {
                 const error = await response.json();
-                const errStr = error.errors.map(e => e.message).join(". ");
+                let errStr = error.errors.map(e => e.message).join(". ");
                 if(response.status === 401)
                 {
                     logout();
@@ -44,10 +49,13 @@ const FetchedCitiesComponent = () => {
             setFetchedCities(data.data);
             setTotalPages(Math.ceil(data.data.length / 5));
             setCurrentPage(1);
+            if(errorMsg)
+            {
+                setErrorMsg("");
+            }
         }
         catch(err)
         {
-            console.log(err.message);
             setErrorMsg(err.message);
         }
         
@@ -56,7 +64,9 @@ const FetchedCitiesComponent = () => {
     const getPagedCities = () => {
         let start = (currentPage - 1) * elementsPerPage;
         let end = start + elementsPerPage;
-        return fetchedCities.slice(start, end);
+        let citiesPage = fetchedCities.slice(start, end);
+        let filledCitiesPage = citiesPage.concat(Array(elementsPerPage - citiesPage.length).fill(null));
+        return filledCitiesPage;
     }
     
     useEffect(() => {
@@ -64,14 +74,22 @@ const FetchedCitiesComponent = () => {
         {
             setErrorMsg("Please log in to fetch cities.");
         }
-    }, [])
+    }, [errorMsg])
 
 
     return (
         <section className="fetch-component">
-            <p className="error-msg">{errorMsg}</p>
+            <div className="error-msg"
+                style={{visibility: errorMsg ? "visible" : "hidden"}}>
+                {errorMsg}
+            </div>
             <div className="fetch-cities">
                 <div className="fetch-buttons">
+                    <div className="per-page-select">
+                        <label htmlFor="per-page-select">Per<br/>page:</label>
+                        <input type="number" 
+                            onChange={(e) => setElementsPerPage(Number(e.target.value))} defaultValue={5} min="1"/>
+                    </div>
                     <select name="limit-select" id="limit-select" defaultValue={5} onChange={e => setLimit(e.target.value)}>
                     {[...Array(10)].map((_,i) => (
                         <option key={i+1} value={i+1}>{i+1}</option>
@@ -80,13 +98,14 @@ const FetchedCitiesComponent = () => {
                     <button onClick={fetchCities} disabled={!isAuthenticated}>Fetch</button>
                 </div>
                 <ul>
-                    {[...getPagedCities(),...Array(elementsPerPage-getPagedCities().length).fill(null)]
-                        .map((c,i) => c ? (
+                    {getPagedCities().map((c,i) => c ? (
                             <li key={c.code}>
                                 <p>{c.name}-{c.code}</p>
                                 <button onClick={() => saveCity(c)}>Save</button>
                             </li> 
-                        ) : (<li key={i}><p>&nbsp;</p></li>)
+                        ) 
+                        :
+                        (<li key={i} className="prevent-select"><p>&nbsp;</p></li>)
                     )}
                     <li>
                         <Pagination 

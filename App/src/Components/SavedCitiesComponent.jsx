@@ -5,21 +5,35 @@ import './SavedCitiesComponent.css'
 
 const SavedCitiesComponent = () => {
 
-    const { cities, removeCity } = useContext(CityContext);
+    const { cities, removeCity, favoriteCity } = useContext(CityContext);
     const [currentPage, setCurrentPage] = useState(1);
-    const [elementsPerPage,setElementsPerPage] = useState(6);
+    const [elementsPerPage,setElementsPerPage] = useState(5);
+    const [showFavorite, setShowFavorite] = useState(false);
     const [totalPages, setTotalPages] = useState(Math.ceil(cities.length / elementsPerPage));
-    const [errorMsg, setErrorMsg] = useState('\u00A0');
+    const [errorMsg, setErrorMsg] = useState("");
 
 
     const getPagedCities = () => {
         let start = (currentPage - 1) * elementsPerPage;
         let end = start + elementsPerPage;
-        return cities.slice(start,end);
+        let citiesPage = showFavorite ? 
+            cities.filter((c) => c.favorite === true).slice(start,end) :
+            cities.slice(start,end);
+        let filledCitiesPage = citiesPage.concat(Array(elementsPerPage - citiesPage.length).fill(null));
+        return filledCitiesPage;
     }
 
     useEffect(() => {
-        setTotalPages(Math.ceil(cities.length / elementsPerPage));
+        if(showFavorite)
+        {
+            const favoriteCities = cities.filter((c) => c.favorite === true);
+            setTotalPages(Math.ceil(favoriteCities.length / elementsPerPage));
+        }
+        else
+        {
+            setTotalPages(Math.ceil(cities.length / elementsPerPage));
+        }
+
         if(currentPage === 0 && totalPages > 0)
         {
             setCurrentPage(1);
@@ -28,21 +42,41 @@ const SavedCitiesComponent = () => {
         {
             setCurrentPage(totalPages);
         }
-    },[cities,totalPages])
+    },[cities,totalPages,showFavorite, elementsPerPage])
   
     return (
         <section className="save-component">
-            <p className="error-msg">{errorMsg}</p>
+            <div className="error-msg"
+                style={{visibility: errorMsg ? "visible" : "hidden"}}>
+                {errorMsg}
+            </div>
             <div className="saved-cities">
+                <div className="saved-cities-buttons">
+                    <div className="per-page-select">
+                        <label htmlFor="per-page-select">Per<br/>page:</label>
+                        <input type="number" 
+                            onChange={(e) => setElementsPerPage(Number(e.target.value))} defaultValue={5} min="1"/>
+                    </div>
+                    <select name="group-select">
+                        <option value="">All groups</option>
+                    </select>
+                    <button className={!showFavorite ? "button-active" : undefined} 
+                        onClick={() => setShowFavorite(false)}>All</button>
+                    <button className={showFavorite ? "button-active" : undefined} 
+                        onClick={() => setShowFavorite(true)}>Favorites</button>
+                </div>
                 <ul>
-                    {[...getPagedCities(),...Array(elementsPerPage - getPagedCities().length).fill(null)]
-                    .map((city,i) => city ? 
-                        (<li key={city.code}>
+                    {getPagedCities().map((city,i) => city ? (
+                        <li key={city.code}>
                             <p>{city.name}-{city.code}</p>
-                            <button onClick={() => removeCity(city)}>Remove</button>
-                        </li>)
+                            <button className="favorite-button" onClick={() => favoriteCity(city)}>
+                                {city.favorite ? '★' : '☆'}
+                            </button>
+                            <button onClick={() => removeCity(city)}>&#10060;</button>
+                        </li>
+                        )
                         :
-                        (<li key={i}><p>&nbsp;</p></li>)
+                        (<li key={i} className="prevent-select"><p>&nbsp;</p></li>)
                     )}
                     <li>
                         <Pagination 
