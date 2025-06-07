@@ -6,7 +6,16 @@ main
     width: 100%;
     height: 100%;
 }
-.main-app
+.countries-section
+{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.groups-section
 {
     width: 100%;
     display:flex;
@@ -20,6 +29,7 @@ main
 {
     height: 30px;
     align-items: center;
+    width: 25%;
 }
 .per-page-select input
 {
@@ -29,4 +39,8 @@ main
 {
     font-size: 0.9em;
     margin-right: 10px;
+}
+.info-msg
+{
+    color: greenyellow;
 }

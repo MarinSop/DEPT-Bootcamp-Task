@@ -1,6 +1,7 @@
-import SavedCitiesComponent from "../Components/SavedCitiesComponent";
-import FetchedCitiesComponent from "../Components/FetchedCitiesComponent";
+import SavedCountriesComponent from "../Components/SavedCountriesComponent";
+import FetchedCountriesComponent from "../Components/FetchedCountriesComponent";
 import GroupsComponent from "../Components/GroupsComponent";
+import AddRemoveFromGroupComponent from "../Components/AddRemoveFromGroupComponent";
 import './Home.css'
 import NavbarComponent from "../Components/NavbarComponent";
 
@@ -10,11 +11,14 @@ const Home = () => {
     return (
         <main>
             <NavbarComponent/>
-            <div className="main-app">
-                <FetchedCitiesComponent/>
-                <SavedCitiesComponent/>
-            </div>
-            <GroupsComponent/>
+            <section className="countries-section">
+                <FetchedCountriesComponent/>
+                <SavedCountriesComponent/>
+            </section>
+            <section className="groups-section">
+                <GroupsComponent/> 
+                <AddRemoveFromGroupComponent/>
+            </section>
         </main>
     )
 }

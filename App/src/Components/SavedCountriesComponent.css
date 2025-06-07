@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 30%;
 }
-.saved-cities-buttons
+.saved-countries-buttons
 {
     display: flex;
     flex-direction: row;
@@ -13,7 +13,27 @@
     padding: 10px;
     height: 50px;
 }
-.saved-cities
+
+.saved-countries-buttons select
+{
+    height: 32px;
+    width: 25%;
+}
+.saved-countries-buttons input
+{
+    height: 32px;
+    width: 25%;
+}
+.saved-countries-buttons button
+{
+    width: 25%;
+}
+#all-button
+{
+    width: 12.5%;
+}
+
+.saved-countries
 {
     display: flex;
     flex-direction: column;
@@ -22,16 +42,8 @@
     border-radius: 10px;
     border: 10px solid transparent;
 }
-.per-page-select
-{
-    height: 30px;
-    align-items: center;
-}
-.per-page-select input
-{
-    width: 80px;
-}
-.saved-cities ul
+
+.saved-countries ul
 {
     list-style-type: none;
     padding: 0;
@@ -40,7 +52,7 @@
     border-radius: 10px;
 }
 
-.saved-cities ul li
+.saved-countries ul li
 {
     min-height: 50px;
     display: flex;
@@ -49,18 +61,18 @@
     margin: auto;
 }
 
-.saved-cities ul li:nth-child(odd)
+.saved-countries ul li:nth-child(odd)
 {
     background-color: #2f2f2f;
 }
 
-.saved-cities ul li p 
+.saved-countries ul li p 
 {
     width: 80%;
     text-align: left;
     padding-left: 20px;
 }
-.saved-cities ul li button
+.saved-countries ul li button
 {
     margin-right: 20px;
 }

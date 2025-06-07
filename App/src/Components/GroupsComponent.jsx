@@ -1,16 +1,17 @@
 import Pagination from './PaginationComponent';
-import CityContext from '../Contexts/CityContext';
+import CountryContext from '../Contexts/CountryContext';
 import { useContext, useState, useEffect } from 'react';
 import './GroupsComponent.css'
 
 const GroupsComponent = () => {
 
-    const { groups, saveGroup, removeGroup } = useContext(CityContext);
-    const [groupName, setGroupName] = useState("");
+    const { groups, saveGroup, removeGroup } = useContext(CountryContext);
+    const [groupName, setGroupName] = useState("")
     const [currentPage, setCurrentPage] = useState(1);
     const [elementsPerPage, setElementsPerPage] = useState(5);
     const [totalPages, setTotalPages] = useState(1);
     const [errorMsg, setErrorMsg] = useState("");
+    const [infoMsg, setInfoMsg] = useState("");
 
     const getPagedGroups = () => {
         let start = (currentPage - 1) * elementsPerPage;
@@ -25,10 +26,12 @@ const GroupsComponent = () => {
         {
             saveGroup(groupName);
             setErrorMsg("");
+            setInfoMsg("Group has been created.")
         }
         catch(err)
         {
             setErrorMsg(err.message);
+            setInfoMsg("");
         }
     }
 
@@ -37,10 +40,12 @@ const GroupsComponent = () => {
         {
             removeGroup(groupId);
             setErrorMsg("");
+            setInfoMsg("Group has been removed.");
         }
         catch(err)
         {
             setErrorMsg(err.message);
+            setInfoMsg("");
         }
     }
 
@@ -56,14 +61,23 @@ const GroupsComponent = () => {
             {
                 setCurrentPage(totalPages);
             }
-        },[groups, totalPages, elementsPerPage])
+    },[groups, totalPages, elementsPerPage])
+
+    useEffect(() => {
+        if (infoMsg || errorMsg) {
+            const timer = setTimeout(() => {
+                setInfoMsg("");
+                setErrorMsg("");
+            }, 3000);
+        return () => clearTimeout(timer);
+        }
+    }, [infoMsg, errorMsg]);
 
     return (
         <section className="groups-component">
-            <div className="error-msg"
-                style={{visibility: errorMsg ? "visible" : "hidden"}}>
-                {errorMsg}
-            </div>
+            <h2>Groups</h2>
+            {errorMsg && (<div className="error-msg">{errorMsg}</div>)}
+            {infoMsg && (<div className="info-msg">{infoMsg}</div>)}
             <div className="groups">
                 <div className="groups-buttons">
                     <div className="per-page-select">

@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 30%;
 }
-.fetch-cities
+.fetch-countries
 {
     display: flex;
     flex-direction: column;
@@ -22,8 +22,17 @@
     margin: 10px 0px; 
     height: 50px;
 }
-
-.fetch-cities ul
+.fetch-buttons select
+{
+    height: 32px;
+    width: 25%;
+}
+.fetch-buttons input
+{
+    height: 32px;
+    width: 25%;
+}
+.fetch-countries ul
 {
     list-style-type: none;
     padding: 0;
@@ -31,7 +40,7 @@
     height: 100%;
     border-radius: 10px;
 }
-.fetch-cities ul li
+.fetch-countries ul li
 {
     min-height: 50px;
     display: flex;
@@ -40,18 +49,18 @@
     margin: auto;
 }
 
-.fetch-cities ul li:nth-child(odd)
+.fetch-countries ul li:nth-child(odd)
 {
     background-color: #2f2f2f;
 }
 
-.fetch-cities ul li p 
+.fetch-countries ul li p 
 {
     width: 80%;
     text-align: left;
     margin-left: 20px;
 }
-.fetch-cities ul li button
+.fetch-countries ul li button
 {
     margin-right: 20px;
 }

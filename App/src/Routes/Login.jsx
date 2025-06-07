@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import AuthContext from "../Contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import NavbarComponent from "../Components/NavbarComponent";
@@ -45,14 +45,20 @@ const Login = () => {
 
     }
 
+    useEffect(() => {
+        if (errorMsg) {
+            const timer = setTimeout(() => {
+                setErrorMsg("");
+            }, 3000);
+        return () => clearTimeout(timer);
+        }
+    }, [errorMsg]);
+
     return (
         <main>
             <NavbarComponent />
             <div className="login">
-                <div className="error-msg"
-                    style={{visibility: errorMsg ? "visible" : "hidden"}}>
-                    {errorMsg}
-                </div>
+                {errorMsg && (<div className="error-msg">{errorMsg}</div>)}
                 <div className="login-form">
                     <form onSubmit={handleSubmit}>
                         <label>Email</label>

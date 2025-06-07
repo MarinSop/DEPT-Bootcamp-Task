@@ -1,22 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../Contexts/AuthContext";
-import CityContext from "../Contexts/CityContext";
+import CountryContext from "../Contexts/CountryContext";
 import Pagination from "./PaginationComponent";
 import { canRequest } from "../Tools/RateLimiter";
-import './FetchedCitiesComponent.css'
+import './FetchedCountriesComponent.css'
 
-const FetchedCitiesComponent = () => {
+const FetchedCountriesComponent = () => {
     
-    const { saveCity } = useContext(CityContext);
+    const { saveCountry } = useContext(CountryContext);
     const { token, isAuthenticated, logout } = useContext(AuthContext);
-    const [fetchedCities, setFetchedCities] = useState([]);
+    const [fetchedCountries, setFetchedCountries] = useState([]);
     const [limit, setLimit] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [elementsPerPage, setElementsPerPage] = useState(5);
-    const [totalPages, setTotalPages] = useState(Math.ceil(fetchedCities.length / elementsPerPage));
+    const [totalPages, setTotalPages] = useState(Math.ceil(fetchedCountries.length / elementsPerPage));
     const [errorMsg, setErrorMsg] = useState("");
+    const [infoMsg, setInfoMsg] = useState("");
     
-    const fetchCities = async () => { 
+    const fetchCountries = async () => { 
         try
         {
             if(!canRequest())
@@ -39,51 +40,75 @@ const FetchedCitiesComponent = () => {
                 if(response.status === 401)
                 {
                     logout();
-                    errStr = "Please log in to fetch cities.";
+                    errStr = "Please log in to fetch countries.";
                 }
 
                 throw new Error(errStr);
             }
             
             const data = await response.json();
-            setFetchedCities(data.data);
+            setFetchedCountries(data.data);
             setTotalPages(Math.ceil(data.data.length / 5));
             setCurrentPage(1);
-            if(errorMsg)
-            {
-                setErrorMsg("");
-            }
+            setErrorMsg("");
         }
         catch(err)
         {
             setErrorMsg(err.message);
+            setInfoMsg("");
         }
         
     }
 
-    const getPagedCities = () => {
+    const getPagedCountries = () => {
         let start = (currentPage - 1) * elementsPerPage;
         let end = start + elementsPerPage;
-        let citiesPage = fetchedCities.slice(start, end);
-        let filledCitiesPage = citiesPage.concat(Array(elementsPerPage - citiesPage.length).fill(null));
-        return filledCitiesPage;
+        let countriesPage = fetchedCountries.slice(start, end);
+        let filledCountriesPage = countriesPage.concat(Array(elementsPerPage - countriesPage.length).fill(null));
+        return filledCountriesPage;
+    }
+
+    const saveCountryHandler = (city) => 
+    {
+        try
+        {
+            saveCountry(city);
+            setInfoMsg("Country has been saved.");
+            setErrorMsg("");
+        }
+        catch(err)
+        {
+            setErrorMsg(err.message);
+            setInfoMsg("");
+        }
     }
     
     useEffect(() => {
+        if(isAuthenticated)
+        {
+            if (infoMsg || errorMsg) {
+                const timer = setTimeout(() => {
+                    setInfoMsg("");
+                    setErrorMsg("");
+                }, 3000);
+            return () => clearTimeout(timer);
+            }
+        }
+    }, [infoMsg,errorMsg])
+
+    useEffect(() => {
         if(!isAuthenticated)
         {
-            setErrorMsg("Please log in to fetch cities.");
+            setErrorMsg("Please log in to fetch countries.");
         }
-    }, [errorMsg])
-
+    },[isAuthenticated])
 
     return (
         <section className="fetch-component">
-            <div className="error-msg"
-                style={{visibility: errorMsg ? "visible" : "hidden"}}>
-                {errorMsg}
-            </div>
-            <div className="fetch-cities">
+            <h2>Fetch countries</h2>
+            {errorMsg && (<div className="error-msg">{errorMsg}</div>)}
+            {infoMsg && (<div className="info-msg">{infoMsg}</div>)}
+            <div className="fetch-countries">
                 <div className="fetch-buttons">
                     <div className="per-page-select">
                         <label htmlFor="per-page-select">Per<br/>page:</label>
@@ -95,13 +120,13 @@ const FetchedCitiesComponent = () => {
                         <option key={i+1} value={i+1}>{i+1}</option>
                     ))}
                     </select>
-                    <button onClick={fetchCities} disabled={!isAuthenticated}>Fetch</button>
+                    <button onClick={fetchCountries} disabled={!isAuthenticated}>Fetch</button>
                 </div>
                 <ul>
-                    {getPagedCities().map((c,i) => c ? (
+                    {getPagedCountries().map((c,i) => c ? (
                             <li key={c.code}>
                                 <p>{c.name}-{c.code}</p>
-                                <button onClick={() => saveCity(c)}>Save</button>
+                                <button onClick={() => saveCountryHandler(c)}>Save</button>
                             </li> 
                         ) 
                         :
@@ -119,4 +144,4 @@ const FetchedCitiesComponent = () => {
     )
 }
 
-export default FetchedCitiesComponent;
+export default FetchedCountriesComponent;
