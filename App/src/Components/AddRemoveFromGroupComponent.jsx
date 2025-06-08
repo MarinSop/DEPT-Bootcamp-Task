@@ -1,5 +1,6 @@
 import CountryContext from "../Contexts/CountryContext"
 import { useContext, useState, useEffect } from "react"
+import { useMediaQuery } from "react-responsive"
 import './AddRemoveFromGroupComponent.css'
 
 
@@ -36,8 +37,6 @@ const AddRemoveFromGroupComponent = () => {
         try
         {
             removeCountryFromGroup(countryCode, Number(groupId));
-            const countriesInGroup = countries.filter(c => c.groups.includes(Number(groupId)));
-            setFilteredCountries(countriesInGroup);
             setErrorMsg("");
             setInfoMsg("Country has been removed from the group.");
         }
@@ -53,6 +52,15 @@ const AddRemoveFromGroupComponent = () => {
         const countriesInGroup = countries.filter(c => c.groups.includes(Number(groupId)));
         setFilteredCountries(countriesInGroup);
     }
+
+    const isMobile = () => {
+        return useMediaQuery({ maxWidth: 600 });
+    }
+
+    useEffect(() => {
+        const countriesInGroup = countries.filter(c => c.groups.includes(Number(removeGroup)));
+        setFilteredCountries(countriesInGroup);
+    }, [countries, groups])
 
     useEffect(() => {
         if (infoMsg || errorMsg) {
@@ -84,7 +92,7 @@ const AddRemoveFromGroupComponent = () => {
                         ))}
                     </select>
                     <button onClick={() => addCountryToGroupHandler(addCountry, addGroup)}>
-                        Add to group</button>
+                        {isMobile ? "Add" : "Add to group"}</button>
                 </div>
                 <div className="ar-inner-section">
                     <select onChange={e => setRemoveGroupHandler(e.target.value)}>
@@ -100,7 +108,7 @@ const AddRemoveFromGroupComponent = () => {
                         ))}
                     </select>
                     <button onClick={() => removeCountryFromGroupHandler(removeCountry, removeGroup)}>
-                        Remove from group</button>
+                        {isMobile ? "Remove" : "Remove from group"}</button>
                 </div>
             </div>
         </section>

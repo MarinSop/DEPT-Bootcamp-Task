@@ -88,3 +88,27 @@
     flex-direction: row;
     font-size: 0.8em;
 }
+
+@media only screen and (max-width: 1024px) {
+    .save-component
+    {
+        width: 95%;
+        margin: auto;
+    }
+    #fav-sel-button
+    {
+        width: 15%;
+    }
+    .saved-countries-buttons .per-page-select input
+    {
+        width:35px;
+    }
+    .saved-countries-buttons select
+    {
+        width:90px;
+    }
+    .saved-countries-buttons .per-page-select label
+    {
+        margin: 0px 10px 0px 0px;
+    }
+}

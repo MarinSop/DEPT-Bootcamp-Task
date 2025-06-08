@@ -12,12 +12,25 @@ const Login = () => {
     const [password, setPassword] = useState();
     const [errorMsg, setErrorMsg] = useState("");
 
+    const validateEmail = (email) => {
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(email);
+    }
+
     const handleSubmit = async (f) => {
         f.preventDefault();
         setErrorMsg();
         
         try
         {
+            if(!validateEmail(email))
+            {
+                throw new Error("Invalid email.");
+            }
+            if(!password)
+            {
+                throw new Error("Please enter a password.");
+            }
             const response = await fetch(import.meta.env.VITE_API_URL + "/login", {
                 method : "POST",
                 headers: {

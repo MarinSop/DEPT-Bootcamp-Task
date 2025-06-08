@@ -34,3 +34,12 @@
     width: 25%;
     height: 50px;
 }
+
+@media only screen and (max-width: 1024px)
+{
+    .ar-from-groups-component
+    {
+        width: 95%;
+        margin: auto;
+    }
+}

@@ -44,3 +44,16 @@ main
 {
     color: greenyellow;
 }
+
+@media only screen and (max-width: 1024px) {
+    .countries-section
+    {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .groups-section
+    {
+        flex-direction: column;
+        justify-content: center;
+    }
+}

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import CountryContext from "../Contexts/CountryContext";
+import { useMediaQuery } from "react-responsive";
 import Pagination from "./PaginationComponent";
 import './SavedCountriesComponent.css'
 
@@ -19,7 +20,7 @@ const SavedCountriesComponent = () => {
         const start = (currentPage - 1) * elementsPerPage;
         const end = start + elementsPerPage;
         const filteredCountries = groupFilter ?
-            countries.filter(c => c.groups.includes(groupFilter)) :
+            countries.filter(c => c.groups.includes(Number(groupFilter))) :
             countries;
         let countriesPage = showFavorite ? 
             filteredCountries.filter((c) => c.favorite).slice(start,end) :
@@ -55,39 +56,77 @@ const SavedCountriesComponent = () => {
         }
     }
 
-    useEffect(() => {
-        if(showFavorite)
-        {
-            const favoriteCountries = countries.filter((c) => c.favorite === true);
-            if(groupFilter)
-            {
-                const filteredCountries = favoriteCountries.filter(c => c.groups.includes(groupFilter));
-                setTotalPages(Math.ceil(filteredCountries.length / elementsPerPage))
-            }
-            setTotalPages(Math.ceil(favoriteCountries.length / elementsPerPage));
-        }
-        else
-        {
-            if(groupFilter)
-            {
-                const filteredCountries = countries.filter(c => c.groups.includes(groupFilter));
-                setTotalPages(Math.ceil(filteredCountries.length / elementsPerPage))
-            }
-            else
-            {
-                setTotalPages(Math.ceil(countries.length / elementsPerPage));
-            }
-        }
+    const isMobile = () => {
+        return useMediaQuery({ maxWidth: 600 });
+    }
 
-        if(currentPage === 0 && totalPages > 0)
+    // useEffect(() => {
+    //     if(groups.length === 0)
+    //     {
+    //         setGroupFilter("");
+    //         console.log("")
+    //     }
+    //     if(showFavorite)
+    //     {
+    //         const favoriteCountries = countries.filter((c) => c.favorite === true);
+    //         if(groupFilter)
+    //         {
+    //             setGroupFilter("");
+    //             const filteredCountries = favoriteCountries.filter(c => c.groups.includes(Number(groupFilter)));
+    //             setTotalPages(Math.ceil(filteredCountries.length / elementsPerPage))
+    //         }
+    //         setTotalPages(Math.ceil(favoriteCountries.length / elementsPerPage));
+    //     }
+    //     else
+    //     {
+    //         if(groupFilter)
+    //         {
+    //             const filteredCountries = countries.filter(c => c.groups.includes(Number(groupFilter)));
+    //             setTotalPages(Math.ceil(filteredCountries.length / elementsPerPage))
+    //         }
+    //         else
+    //         {
+    //             setTotalPages(Math.ceil(countries.length / elementsPerPage));
+    //         }
+    //     }
+
+    //     if(currentPage === 0 && totalPages > 0)
+    //     {
+    //         setCurrentPage(1);
+    //     }
+    //     if(currentPage > totalPages)
+    //     {
+    //         setCurrentPage(totalPages);
+    //     }
+    // },[countries, totalPages, showFavorite, elementsPerPage, groupFilter])
+
+    useEffect(() => {
+        let filteredCountries = countries;
+        if(groupFilter && groups.length === 0)
+        {   
+            setGroupFilter("");
+        }
+        if (groupFilter)
+        {
+            filteredCountries = countries.filter(c => c.groups.includes(Number(groupFilter)));
+        }
+        if (showFavorite)
+        {
+            filteredCountries = filteredCountries.filter(c => c.favorite);
+        }
+        const newTotalPages = Math.ceil(filteredCountries.length / elementsPerPage);
+
+        if (currentPage === 0 && newTotalPages > 0)
         {
             setCurrentPage(1);
-        }
-        if(currentPage > totalPages)
+        } 
+        else if (currentPage > newTotalPages)
         {
-            setCurrentPage(totalPages);
+            setCurrentPage(newTotalPages);
         }
-    },[countries, totalPages, showFavorite, elementsPerPage, groupFilter])
+        setTotalPages(newTotalPages);
+
+    }, [countries, groups, showFavorite, elementsPerPage, groupFilter]);
 
     useEffect(() => {
         if (infoMsg || errorMsg) {
@@ -97,7 +136,7 @@ const SavedCountriesComponent = () => {
             }, 3000);
         return () => clearTimeout(timer);
     }
-}, [infoMsg, errorMsg]);
+    }, [infoMsg, errorMsg]);
   
     return (
         <section className="save-component">
@@ -111,7 +150,7 @@ const SavedCountriesComponent = () => {
                         <input type="number" 
                             onChange={(e) => setElementsPerPage(Number(e.target.value))} defaultValue={5} min="1"/>
                     </div>
-                    <select onChange={e => setGroupFilter(Number(e.target.value))} name="group-select">
+                    <select onChange={e => setGroupFilter(e.target.value)} name="group-select">
                         <option value="">All groups</option>
                         {groups.map(g => (
                             <option key={g.id} value={g.id}>{g.name}</option>
@@ -119,8 +158,9 @@ const SavedCountriesComponent = () => {
                     </select>
                     <button id="all-button" className={!showFavorite ? "button-active" : undefined} 
                         onClick={() => setShowFavorite(false)}>All</button>
-                    <button className={showFavorite ? "button-active" : undefined} 
-                        onClick={() => setShowFavorite(true)}>Favorites</button>
+
+                    <button id="fav-sel-button" className={showFavorite ? "button-active" : undefined} 
+                        onClick={() => setShowFavorite(true)}>{isMobile() ? "Fav" : "Favorites"}</button>
                 </div>
                 <ul>
                     {getPagedCountries().map((country,i) => country ? (

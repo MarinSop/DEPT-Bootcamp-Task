@@ -64,3 +64,11 @@
 {
     margin-right: 20px;
 }
+
+@media only screen and (max-width: 1024px) {
+    .fetch-component
+    {
+        width: 95%;
+        margin: auto;
+    }
+}
